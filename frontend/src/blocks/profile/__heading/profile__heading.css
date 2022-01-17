@@ -1,0 +1,11 @@
+.profile__heading {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  justify-content: flex-end;
+}
+@media screen and (min-width: 1280px) {
+  .profile__heading {
+    justify-content: flex-start;
+  }
+}

@@ -1,0 +1,12 @@
+.authentication-form__sumbit-button {
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #000;
+  background: #fff;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  max-width: 360px;
+  padding: 14px 82px;
+}

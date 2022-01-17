@@ -1,0 +1,14 @@
+.fullscreen__text {
+  font-size: 12px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 240px;
+  margin: 10px 0 0;
+}
+@media screen and (min-width: 1280px) {
+  .fullscreen__text {
+    max-width: 291px;
+  }
+}

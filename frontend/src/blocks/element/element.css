@@ -1,0 +1,17 @@
+.element {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.element:last-of-type {
+  margin-bottom: 0;
+}
+@media screen and (min-width: 1280px) {
+  .element {
+    margin: 0;
+  }
+}

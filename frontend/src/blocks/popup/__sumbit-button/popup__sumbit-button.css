@@ -1,0 +1,24 @@
+.popup__sumbit-button {
+  font-size: 14px;
+  line-height: 1.21;
+  text-align: center;
+  color: #fff;
+  background: #000000;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  max-width: 238px;
+  padding: 14px 82px;
+}
+.popup__sumbit-button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+@media screen and (min-width: 1280px) {
+  .popup__sumbit-button {
+    max-width: 358px;
+    padding: 14px 124px 18px 125px;
+    font-size: 18px;
+    line-height: 1.22;
+  }
+}

@@ -1,0 +1,10 @@
+.popup__sumbit-button_inactive {
+  color: #000;
+  opacity: 0.2;
+  border: 1px solid #000000;
+  background: #fff;
+}
+.popup__sumbit-button_inactive:hover {
+  opacity: 0.2;
+  cursor: default;
+}
