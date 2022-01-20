@@ -1,5 +1,5 @@
 //апи
-export const authUrl = 'https://auth.nomoreparties.co'
+export const authUrl = 'https://api.artem.mesto.students.nomoredomains.work'
 
 function checkResponse(response) {
   if (response.ok) {

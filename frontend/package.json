@@ -13,6 +13,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "deploy": "npm run build && scp -r ./build/* artem-v@51.250.7.213:/home/artem-v/react-mesto-api-full/frontend",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

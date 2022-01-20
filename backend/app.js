@@ -1,3 +1,5 @@
+require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -14,6 +16,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { PORT = 3000 } = process.env;
 // сервер
 const app = express();
+app.use(cors());
 app.use(cookieParser());
 // юзер роутер
 const userRouter = require('./routes/users');
@@ -29,6 +32,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb').then(() => {
   });
 app.use(requestLogger);
 app.use(bodyParser.json());
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

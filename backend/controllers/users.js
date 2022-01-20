@@ -13,6 +13,7 @@ const user = require('../models/user');
 
 // контроллер login, который получает из запроса почту и пароль и проверяет их.
 const login = (req, res, next) => {
+  const { NODE_ENV, JWT_SECRET } = process.env;
   // достать почту пароль из запроса
   const { email, password } = req.body;
   // выкинуть ошибку если их нету
@@ -35,9 +36,7 @@ const login = (req, res, next) => {
             throw new UnauthorizedError('Передан неверный логин или пароль.');
           }
           // создадим токен на 7 дней
-          const token = jwt.sign({ _id: u._id }, 'supa-dupa-secret-key', {
-            expiresIn: '7d',
-          });
+          const token = jwt.sign({ _id: u._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
           // запишем токен в куку на 7 дней
           res.cookie('cookieToken', token, {
             maxAge: 3600000 * 24 * 7,
