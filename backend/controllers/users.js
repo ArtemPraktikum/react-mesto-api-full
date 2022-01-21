@@ -43,8 +43,8 @@ const login = (req, res, next) => {
             httpOnly: true,
             //  хотел добавить sameSite: true, но постман  тогда не может получить куки(
           })
-          // вернём юзеру его id
-            .send({ _id: u._id, token });
+          // вернём юзеру его токен
+            .send({ token });
         })
         .catch(next);
     })
