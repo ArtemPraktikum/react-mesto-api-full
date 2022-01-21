@@ -1,5 +1,5 @@
 //апи
-export const authUrl = 'https://api.artem.mesto.students.nomoredomains.work'
+const authUrl = 'https://api.artem.mesto.students.nomoredomains.work'
 
 function checkResponse(response) {
   if (response.ok) {
@@ -26,11 +26,18 @@ export const authorization = (password, email) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
-  }).then(checkResponse)
+  })
+  .then(checkResponse)
+  .then((response) => {
+    console.log(response);
+    if (response.token) {
+      localStorage.setItem("token", response.token);
+      return response;
+    }})
 }
 //Параметры запроса для проверки валидности токена и получения email для вставки в шапку сайта
 export const tokenValidate = (token) => {
-  return fetch(`${authUrl}/me`, {
+  return fetch(`${authUrl}/users/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
