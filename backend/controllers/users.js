@@ -44,7 +44,7 @@ const login = (req, res, next) => {
             //  хотел добавить sameSite: true, но постман  тогда не может получить куки(
           })
           // вернём юзеру его id
-            .send({ _id: u._id });
+            .send({ _id: u._id, token });
         })
         .catch(next);
     })
