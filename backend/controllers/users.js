@@ -38,13 +38,13 @@ const login = (req, res, next) => {
           // создадим токен на 7 дней
           const token = jwt.sign({ _id: u._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
           // запишем токен в куку на 7 дней
-          res.cookie('cookieToken', token, {
+          res.cookie('jwt', token, {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
             //  хотел добавить sameSite: true, но постман  тогда не может получить куки(
           })
           // вернём юзеру его токен
-            .send({ token });
+            .send({ _id: u._id, token });
         })
         .catch(next);
     })

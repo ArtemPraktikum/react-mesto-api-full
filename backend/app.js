@@ -10,6 +10,7 @@ const {
 const validator = require('validator');
 const NotFoundError = require('./errors/NotFoundError');
 const { login, createUser } = require('./controllers/users');
+const auth = require('./middlewares/auth');
 // логгеры ошибок
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 // порт сервера
@@ -60,8 +61,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use(userRouter);
-app.use(cardRouter);
+app.use('/users', auth, userRouter);
+app.use('/cards', auth, cardRouter);
 
 // обработка запросов на несуществующий роут.
 app.use((req, res) => {
