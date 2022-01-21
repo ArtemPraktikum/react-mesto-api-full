@@ -30,7 +30,7 @@ export const authorization = (password, email) => {
 }
 //Параметры запроса для проверки валидности токена и получения email для вставки в шапку сайта
 export const tokenValidate = (token) => {
-  return fetch(`${authUrl}/users/me`, {
+  return fetch(`${authUrl}/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

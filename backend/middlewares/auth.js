@@ -4,17 +4,16 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const auth = (req, res, next) => {
-  const bearerToken = req.cookies.cookieToken;
-
-  if (!bearerToken) {
+  const authorization = req.headers;
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     throw new UnauthorizedError('Необходимо залогиниться');
   }
 
-  const authToken = bearerToken.replace('Bearer ', '');
+  const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {
-    payload = jwt.verify(authToken, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
     // выкинуть ошибку если верификация токена не удалась.
     throw new UnauthorizedError('Необходимо залогиниться');
