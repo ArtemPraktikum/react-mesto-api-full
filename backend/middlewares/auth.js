@@ -5,7 +5,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const auth = (req, res, next) => {
   const authorization = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  if (!authorization) {
     throw new UnauthorizedError('Необходимо залогиниться');
   }
 
