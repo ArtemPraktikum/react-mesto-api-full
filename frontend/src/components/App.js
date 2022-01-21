@@ -189,8 +189,8 @@ function App() {
           .then((response) => {
             if (response) {
               setLoggedIn(true)
+              console.log(response);
               history.push('/')
-              console.log(response.data.email);
               setUserMail(response.data.email)
             }
           })

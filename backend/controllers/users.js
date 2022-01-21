@@ -65,10 +65,10 @@ const getUsers = (req, res, next) => {
 };
 // возвращает пользователя по _id.
 const getUser = (req, res, next) => {
-  user.findById(req.params._id)
+  user.findById(req.params.userId)
     .orFail()
     .catch(() => {
-      throw new NotFoundError('Пользователь по указанному _id не найден.');
+      throw new NotFoundError('Пользователь по указанному userId не найден.');
     })
     .then((u) => {
       res.status(200).send(u);
