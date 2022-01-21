@@ -48,8 +48,7 @@ function App() {
   }, [])
   // Данные юзера необходимые при загрузке страницы
   useEffect(() => {
-    api
-      .getUserInfo()
+    tokenValidate()
       .then((userArray) => {
         setCurrentUser(userArray)
       })
@@ -153,10 +152,11 @@ function App() {
   function onLogin(password, email) {
     authorization(password, email)
       .then((response) => {
+        if (response.token) {
         setLoggedIn(true)
         setUserMail(email)
         history.push('/')
-        localStorage.setItem('token', response.token)
+        }
       })
       .catch((error) => {
         console.log(error)
@@ -168,9 +168,9 @@ function App() {
   function onRegister(password, email) {
     registration(password, email)
       .then((response) => {
+        console.log(response);
         setRegCondition(true)
         history.push('/')
-        localStorage.setItem('token', response.token)
       })
       .catch((error) => {
         setRegCondition(false)

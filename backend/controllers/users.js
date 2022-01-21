@@ -50,17 +50,17 @@ const login = (req, res, next) => {
     })
     .catch(next);
 };
+// возвращает всех пользователей.
+const getUsers = (req, res, next) => {
+  user.find({})
+    .then((users) => res.status(200).send(users))
+    .catch(next);
+};
 // возвращает информацию о текущем пользователе.
 const getMyUser = (req, res, next) => {
   user.findOne({ _id: req.user._id })
     .orFail()
     .then((me) => res.status(200).send(me))
-    .catch(next);
-};
-// возвращает всех пользователей.
-const getUsers = (req, res, next) => {
-  user.find({})
-    .then((users) => res.status(200).send(users))
     .catch(next);
 };
 // возвращает пользователя по _id.
@@ -90,11 +90,7 @@ const createUser = (req, res, next) => {
         throw new ConflictError('Юзер с данным email адресом уже зарегистрирован');
       } else next(err);
     })
-    .then((u) => res.status(201).send({
-      data: {
-        name: u.name, about: u.about, avatar: u.avatar, email: u.email,
-      },
-    }))
+    .then((u) => res.status(201).send(u))
     .catch(next);
 };
 // обновляет профиль.

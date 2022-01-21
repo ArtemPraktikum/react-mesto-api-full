@@ -12,6 +12,9 @@ const {
 // GET /users — возвращает всех пользователей
 userRouter.get('/', getUsers);
 
+// GET /users/me - возвращает информацию о текущем пользователе
+userRouter.get('/me', getMyUser);
+
 // GET /users/:userId - возвращает пользователя по _id
 userRouter.get('/:userId', celebrate({
   params: Joi.object().keys({
@@ -38,8 +41,5 @@ userRouter.patch('/me/avatar', celebrate({
     }),
   }),
 }), patchAvatar);
-
-// GET /users/me - возвращает информацию о текущем пользователе
-userRouter.get('/me', getMyUser);
 
 module.exports = userRouter;
