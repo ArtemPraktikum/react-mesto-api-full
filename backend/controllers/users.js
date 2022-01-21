@@ -52,7 +52,7 @@ const login = (req, res, next) => {
 };
 // возвращает информацию о текущем пользователе.
 const getMyUser = (req, res, next) => {
-  user.findById(req.user._id)
+  user.findOne({ _id: req.user._id })
     .orFail()
     .then((me) => res.status(200).send(me))
     .catch(next);
