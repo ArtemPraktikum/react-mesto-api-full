@@ -20,7 +20,6 @@ const createCard = (req, res, next) => {
     .catch((err) => {
       throw new BadRequestError('Переданы некорректные данные при создании карточки');
     })
-    .then((c) => res.status(201).send({ data: c }))
     .catch(next);
 };
 // удаляет карточку по идентификатору.

@@ -11,10 +11,10 @@ const {
 } = require('../controllers/cards');
 
 // GET /cards — возвращает все карточки.
-cardRouter.get('/cards', auth, getCards);
+cardRouter.get('/', getCards);
 
 // POST /cards — создаёт карточку.
-cardRouter.post('/cards', auth, celebrate({
+cardRouter.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().custom((value) => {
@@ -27,23 +27,23 @@ cardRouter.post('/cards', auth, celebrate({
 }), createCard);
 
 // DELETE /cards/:cardId — удаляет карточку по идентификатору
-cardRouter.delete('/cards/:_id', auth, celebrate({
+cardRouter.delete('/:cardId', celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().alphanum().length(24).hex(),
+    cardId: Joi.string().alphanum().length(24).hex(),
   }),
 }), deleteCard);
 
 // PUT /cards/:cardId/likes — поставить лайк карточке
-cardRouter.put('/cards/:_id/likes', auth, celebrate({
+cardRouter.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().alphanum().length(24).hex(),
+    cardId: Joi.string().alphanum().length(24).hex(),
   }),
 }), likeCard);
 
 // DELETE /cards/:cardId/likes — убрать лайк с карточки
-cardRouter.delete('/cards/:_id/likes', auth, celebrate({
+cardRouter.delete('/:cardId/likes', auth, celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().alphanum().length(24).hex(),
+    cardId: Joi.string().alphanum().length(24).hex(),
   }),
 }), dislikeCard);
 

@@ -190,6 +190,7 @@ function App() {
             if (response) {
               setLoggedIn(true)
               history.push('/')
+              console.log(response.data.email);
               setUserMail(response.data.email)
             }
           })
