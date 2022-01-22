@@ -44,7 +44,7 @@ const deleteCard = (req, res, next) => {
 // поставить лайк карточке.
 const likeCard = (req, res, next) => {
   card.findByIdAndUpdate(
-    req.params._id,
+    req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
@@ -52,12 +52,12 @@ const likeCard = (req, res, next) => {
       if (c) {
         res.status(201).send(c);
       } else {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        throw new NotFoundError('Карточка с указанным cardId не найдена.');
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Передаётся невалидный id'));
+        next(new BadRequestError('Передаётся невалидный cardId'));
       }
       next(err);
     });
@@ -65,7 +65,7 @@ const likeCard = (req, res, next) => {
 // убрать лайк с карточки.
 const dislikeCard = (req, res, next) => {
   card.findByIdAndUpdate(
-    req.params._id,
+    req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
   )
@@ -73,12 +73,12 @@ const dislikeCard = (req, res, next) => {
       if (c) {
         res.status(201).send(c);
       } else {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        throw new NotFoundError('Карточка с указанным cardId не найдена.');
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Передаётся невалидный id'));
+        next(new BadRequestError('Передаётся невалидный cardId'));
       }
       next(err);
     });
