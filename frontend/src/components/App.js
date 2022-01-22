@@ -35,27 +35,41 @@ function App() {
   //переменная логин да/нет
   const [loggedIn, setLoggedIn] = useState(false)
 
-  // Данные карточек необходимые при загрузке страницы
+
+  function handleTokenCheck() {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      tokenValidate(token)
+        .then((res) => {
+          if (res) {
+            setUserMail(res.email);
+            setLoggedIn(true);
+            history.push("/");
+          }
+        });
+    }
+  }
+
   useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cardsArray) => {
-        setСards(cardsArray)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }, [])
-  // Данные юзера необходимые при загрузке страницы
-  useEffect(() => {
-    tokenValidate()
-      .then((userArray) => {
-        setCurrentUser(userArray)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }, [])
+    handleTokenCheck();
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((result) => {
+          setCurrentUser(result);
+        })
+        .catch((err) => console.log(err));
+      
+      api
+        .getInitialCards()
+        .then((result) => {
+          setСards(result);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
+
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id)
@@ -153,6 +167,7 @@ function App() {
     authorization(password, email)
       .then((response) => {
         if (response.token) {
+        localStorage.setItem("token", response.token);
         setLoggedIn(true)
         setUserMail(email)
         history.push('/')
@@ -180,27 +195,7 @@ function App() {
         setIsInfoTooltipOpen(true)
       })
   }
-  //проверить токен и записать юзермейл
-  useEffect(() => {
-    function tokenCheck() {
-      const token = localStorage.getItem('token')
-      if (token) {
-        tokenValidate(token)
-          .then((response) => {
-            if (response) {
-              setLoggedIn(true)
-              console.log(response);
-              history.push('/')
-              setUserMail(response.data.email)
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      }
-    }
-    tokenCheck()
-  }, [history])
+
   //убрать токен\разлогиниться\перейти на стр. логина
   function onSignOut() {
     localStorage.removeItem('token')

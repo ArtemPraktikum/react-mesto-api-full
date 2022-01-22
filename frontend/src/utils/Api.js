@@ -29,13 +29,13 @@ class Api {
     }
   }
   _UnlikeCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
   }
   _likeCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
@@ -72,7 +72,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      headers: { ...this._headers, Authorization: `Bearer ${token}` },
+      headers: { ...this._headers, authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
   }
   getInitialCards() {

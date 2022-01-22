@@ -16,7 +16,7 @@ export const registration = (password, email) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
-  }).then(checkResponse)
+  }).then((res) => checkResponse(res))
 }
 //авторизация
 export const authorization = (password, email) => {
@@ -27,20 +27,15 @@ export const authorization = (password, email) => {
     },
     body: JSON.stringify({ password, email }),
   })
-  .then(checkResponse)
-  .then((response) => {
-    if (response.token) {
-      localStorage.setItem("token", response.token);
-      return response;
-    }})
-}
+  .then((res) => checkResponse(res))
+  }
 //Параметры запроса для проверки валидности токена и получения email для вставки в шапку сайта
 export const tokenValidate = (token) => {
   return fetch(`${authUrl}/users/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse)
+  }).then((res) => checkResponse(res))
 }
