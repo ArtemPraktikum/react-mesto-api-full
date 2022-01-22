@@ -5,7 +5,7 @@ function Card(props) {
   // Подписка на контекст
   const traverseUserContext = useContext(CurrentUserContext)
   // Определяем, являемся ли мы владельцем текущей карточки
-  const isOwn = props.card.owner._id === traverseUserContext._id
+  const isOwn = props.card.owner === traverseUserContext._id
   // Создаём переменную, которую после зададим в `className` для кнопки удаления
   const cardDeleteButtonClassName = `${
     isOwn ? 'element__trash-button element__trash-button_visible' : 'element__trash-button'

@@ -24,16 +24,16 @@ const createCard = (req, res, next) => {
 };
 // удаляет карточку по идентификатору.
 const deleteCard = (req, res, next) => {
-  card.findById(req.params._id)
+  card.findById(req.params.cardId)
     .orFail()
     .catch(() => {
-      throw new NotFoundError('Карточка по указанному _id не найдена.');
+      throw new NotFoundError('Карточка по указанному cardId не найдена.');
     })
     .then((c) => {
       if (c.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Вы не можете удалить чужую карточку');
       } else {
-        card.findByIdAndDelete(req.params._id)
+        card.findByIdAndDelete(req.params.cardId)
           .then((deletedCard) => {
             res.status(200).send(deletedCard);
           });
