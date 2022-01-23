@@ -36,22 +36,22 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false)
 
 
-  function handleTokenCheck() {
-    const token = localStorage.getItem("token");
-    console.log(token);
-    if (token) {
-      tokenValidate(token)
-        .then((res) => {
-          if (res) {
-            setUserMail(res.email);
-            setLoggedIn(true);
-            history.push("/");
-          }
-        });
-    }
-  }
+
 
   useEffect(() => {
+    function handleTokenCheck() {
+      const token = localStorage.getItem("token");
+      if (token) {
+        tokenValidate(token)
+          .then((res) => {
+            if (res) {
+              setUserMail(res.email);
+              setLoggedIn(true);
+              history.push("/");
+            }
+          });
+      }
+    }
     handleTokenCheck();
     if (loggedIn) {
       api
@@ -68,11 +68,11 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [loggedIn]);
+  }, [history, loggedIn]);
 
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id)
+    const isLiked = card.likes.some((i) => i === currentUser._id)
 
     api
       .changeLikeCardStatus(card._id, isLiked)
@@ -166,6 +166,7 @@ function App() {
   function onLogin(password, email) {
     authorization(password, email)
       .then((response) => {
+        console.log(response);
         if (response.token) {
         localStorage.setItem("token", response.token);
         setLoggedIn(true)
@@ -199,7 +200,9 @@ function App() {
   //убрать токен\разлогиниться\перейти на стр. логина
   function onSignOut() {
     localStorage.removeItem('token')
+    setUserMail('')
     setLoggedIn(false)
+    setCurrentUser({})
     history.push('/sign-in')
   }
 
