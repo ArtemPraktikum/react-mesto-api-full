@@ -18,22 +18,23 @@ const createCard = (req, res, next) => {
   card.create({ ...req.body, owner })
     .then((c) => res.status(201).send(c))
     .catch((err) => {
-      throw new BadRequestError('Переданы некорректные данные при создании карточки');
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные при создании карточки'));
+      } else {
+        next(err);
+      }
     })
     .catch(next);
 };
 // удаляет карточку по идентификатору.
 const deleteCard = (req, res, next) => {
   card.findById(req.params.cardId)
-    .orFail()
-    .catch(() => {
-      throw new NotFoundError('Карточка по указанному cardId не найдена.');
-    })
+    .orFail(() => new NotFoundError('Карточка по указанному cardId не найдена.'))
     .then((c) => {
       if (c.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Вы не можете удалить чужую карточку');
       } else {
-        card.findByIdAndDelete(req.params.cardId)
+        return card.findByIdAndDelete(req.params.cardId)
           .then((deletedCard) => {
             res.status(200).send(deletedCard);
           });

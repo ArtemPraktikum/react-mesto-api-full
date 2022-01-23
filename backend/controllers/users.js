@@ -59,17 +59,14 @@ const getUsers = (req, res, next) => {
 // возвращает информацию о текущем пользователе.
 const getMyUser = (req, res, next) => {
   user.findOne({ _id: req.user._id })
-    .orFail()
+    .orFail(() => new NotFoundError('Пользователь по указанному userId не найден.'))
     .then((me) => res.status(200).send(me))
     .catch(next);
 };
 // возвращает пользователя по _id.
 const getUser = (req, res, next) => {
   user.findById(req.params.userId)
-    .orFail()
-    .catch(() => {
-      throw new NotFoundError('Пользователь по указанному userId не найден.');
-    })
+    .orFail(() => new NotFoundError('Пользователь по указанному userId не найден.'))
     .then((u) => {
       res.status(200).send(u);
     })
@@ -85,12 +82,20 @@ const createUser = (req, res, next) => {
     .then((hash) => user.create({
       name, about, avatar, email, password: hash,
     }))
+    .then((u) => res.status(201).send({
+      data: {
+        name: u.name,
+        about: u.about,
+        avatar: u.avatar,
+        email: u.email,
+        _id: u._id,
+      },
+    }))
     .catch((err) => {
-      if (err.name === 'MongoError' || err.code === 11000) {
+      if (err.code === 11000) {
         throw new ConflictError('Юзер с данным email адресом уже зарегистрирован');
       } else next(err);
     })
-    .then((u) => res.status(201).send(u))
     .catch(next);
 };
 // обновляет профиль.
@@ -112,6 +117,8 @@ const patchUser = (req, res, next) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         throw new BadRequestError('Переданы некорректные данные при обновлении профиля.');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -135,6 +142,8 @@ const patchAvatar = (req, res, next) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         throw new BadRequestError('Переданы некорректные данные при обновлении аватара.');
+      } else {
+        next(err);
       }
     })
     .catch(next);
