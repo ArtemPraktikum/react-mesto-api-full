@@ -1,5 +1,3 @@
-const token = localStorage.getItem('token');
-
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl
@@ -11,7 +9,7 @@ class Api {
     }
     return Promise.reject(`Ошибка: ${response.status}`)
   }
-  updateAvatar(avatarLink) {
+  updateAvatar(avatarLink, token) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
@@ -21,34 +19,34 @@ class Api {
     }).then(this._checkResponse)
   }
 
-  changeLikeCardStatus = (cardId, isLiked) => {
+  changeLikeCardStatus = (cardId, isLiked, token) => {
     if (!isLiked) {
-      return this._likeCard(cardId)
+      return this._likeCard(cardId, token)
     } else {
-      return this._UnlikeCard(cardId)
+      return this._UnlikeCard(cardId, token)
     }
   }
-  _UnlikeCard(cardId) {
+  _UnlikeCard(cardId, token) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
   }
-  _likeCard(cardId) {
+  _likeCard(cardId, token) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
   }
 
-  deleteCard(cardId) {
+  deleteCard(cardId, token) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
   }
 
-  postCard(name, link) {
+  postCard(name, link, token) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
@@ -59,7 +57,7 @@ class Api {
     }).then(this._checkResponse)
   }
 
-  updateUserInfo(name, about) {
+  updateUserInfo(name, about, token) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },
@@ -69,13 +67,13 @@ class Api {
       }),
     }).then(this._checkResponse)
   }
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       headers: { ...this._headers, authorization: `Bearer ${token}` },
     }).then(this._checkResponse)
   }
-  getInitialCards() {
+  getInitialCards(token) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
       headers: { ...this._headers, Authorization: `Bearer ${token}` },

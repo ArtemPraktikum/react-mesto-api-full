@@ -54,15 +54,17 @@ function App() {
     }
     handleTokenCheck();
     if (loggedIn) {
+      const token = localStorage.getItem("token");
+
       api
-        .getUserInfo()
+        .getUserInfo(token)
         .then((result) => {
           setCurrentUser(result);
         })
         .catch((err) => console.log(err));
       
       api
-        .getInitialCards()
+        .getInitialCards(token)
         .then((result) => {
           setСards(result);
         })
@@ -72,10 +74,11 @@ function App() {
 
 
   function handleCardLike(card) {
+    const token = localStorage.getItem("token");
     const isLiked = card.likes.some((i) => i === currentUser._id)
 
     api
-      .changeLikeCardStatus(card._id, isLiked)
+      .changeLikeCardStatus(card._id, isLiked, token)
       .then((newCard) => {
         setСards((state) => state.map((c) => (c._id === card._id ? newCard : c)))
       })
@@ -84,8 +87,10 @@ function App() {
       })
   }
   function handleCardDelete(card) {
+    const token = localStorage.getItem("token");
+
     api
-      .deleteCard(card._id)
+      .deleteCard(card._id, token)
       .then((newCard) => {
         const newCardArr = cards.filter((item) => (item._id === card._id ? null : newCard))
         setСards(newCardArr)
@@ -95,8 +100,10 @@ function App() {
       })
   }
   const handleUpdateUser = (data) => {
+    const token = localStorage.getItem("token");
+
     api
-      .updateUserInfo(data.name, data.about)
+      .updateUserInfo(data.name, data.about, token)
       .then((userData) => {
         setCurrentUser(userData)
         closeAllPopups()
@@ -106,8 +113,10 @@ function App() {
       })
   }
   const handleUpdateAvatar = (avatar) => {
+    const token = localStorage.getItem("token");
+
     api
-      .updateAvatar(avatar)
+      .updateAvatar(avatar, token)
       .then((userData) => {
         setCurrentUser(userData)
         closeAllPopups()
@@ -117,8 +126,10 @@ function App() {
       })
   }
   const handleAddPlaceSubmit = (data) => {
+    const token = localStorage.getItem("token");
+
     api
-      .postCard(data.name, data.link)
+      .postCard(data.name, data.link, token)
       .then((newCard) => {
         setСards([newCard, ...cards])
         closeAllPopups()
@@ -166,7 +177,6 @@ function App() {
   function onLogin(password, email) {
     authorization(password, email)
       .then((response) => {
-        console.log(response);
         if (response.token) {
         localStorage.setItem("token", response.token);
         setLoggedIn(true)
@@ -184,7 +194,6 @@ function App() {
   function onRegister(password, email) {
     registration(password, email)
       .then((response) => {
-        console.log(response);
         setRegCondition(true)
         history.push('/')
       })
